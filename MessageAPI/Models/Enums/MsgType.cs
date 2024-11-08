@@ -1,5 +1,4 @@
-﻿
-namespace MessageAPI.Enums
+﻿namespace MessageAPI.Models.Enums
 {
     public enum MsgType
     {
