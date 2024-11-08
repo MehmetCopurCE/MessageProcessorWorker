@@ -1,16 +1,21 @@
 using MessageAPI.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// MySQL veritabanýný ekle
 var connectionString = builder.Configuration.GetConnectionString("MessageDatabase");
 builder.Services.AddDbContext<MessageDbContext>(options =>
-    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))); // MySQL versiyonunu kontrol et
+    options.UseNpgsql(connectionString));  // PostgreSQL için Npgsql kullanýlýyor
+
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(option => {
+    option.JsonSerializerOptions.PropertyNamingPolicy = null;
+    option.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+
+} );
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
