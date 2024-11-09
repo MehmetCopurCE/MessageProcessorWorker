@@ -3,7 +3,7 @@
     public enum MsgType
     {
         Notification,
-        Message,
+        Sms,
         Email
     }
 }
