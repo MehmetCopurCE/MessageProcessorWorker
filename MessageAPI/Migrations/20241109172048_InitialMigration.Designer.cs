@@ -11,8 +11,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MessageAPI.Migrations
 {
-    [DbContext(typeof(MessageDbContext))]
-    [Migration("20241108210807_InitialMigration")]
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20241109172048_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -40,11 +40,15 @@ namespace MessageAPI.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("MessageType")
+                    b.Property<string>("MsgReceiver")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Status")
+                    b.Property<string>("MsgStatus")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("MsgType")
                         .IsRequired()
                         .HasColumnType("text");
 

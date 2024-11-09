@@ -1,12 +1,14 @@
 ﻿using MessageAPI.Models.Enums;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 
 namespace MessageAPI.Models.DTOs
 {
     public class MessageRequestDto
     {
+        public MsgType MsgType { get; set; }
+
+        public string MsgReceiver { get; set; }
+
         public string Content { get; set; }
-        public MsgType MessageType { get; set; }
+        
     }
 }

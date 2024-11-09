@@ -18,10 +18,11 @@ namespace MessageAPI.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    MsgType = table.Column<string>(type: "text", nullable: false),
+                    MsgReceiver = table.Column<string>(type: "text", nullable: false),
                     Content = table.Column<string>(type: "text", nullable: false),
-                    MessageType = table.Column<string>(type: "text", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false)
+                    MsgStatus = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -8,13 +8,15 @@ namespace MessageAPI.Models
     {
         public int Id { get; set; }
 
-        public string Content { get; set; }
+        public MsgType MsgType { get; set; }
 
-        public MsgType MessageType { get; set; }
+        public string MsgReceiver { get; set; }
+
+        public string Content { get; set; }
 
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
-        public MsgStatus Status { get; set; } = MsgStatus.Pending;
+        public MsgStatus MsgStatus { get; set; } = MsgStatus.Pending;
 
     }
 }

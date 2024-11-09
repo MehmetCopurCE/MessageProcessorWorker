@@ -16,9 +16,9 @@ namespace MessageAPI.Controllers
     [Route("api/[controller]")]
     public class MessagesController : Controller
     {
-        private readonly MessageDbContext _context;
+        private readonly ApplicationDbContext _context;
 
-        public MessagesController(MessageDbContext context)
+        public MessagesController(ApplicationDbContext context)
         {
             _context = context;
         }
@@ -36,9 +36,10 @@ namespace MessageAPI.Controllers
             var message = new Message
             {
                 Content = messageDto.Content,
-                MessageType = messageDto.MessageType,
+                MsgType = messageDto.MsgType,
+                MsgReceiver = messageDto.MsgReceiver,
                 CreatedAt = DateTime.UtcNow,
-                Status = MsgStatus.Pending // Varsayılan olarak 'Pending' atanır
+                MsgStatus = MsgStatus.Pending // Varsayılan olarak 'Pending' atanır
             };
 
             _context.Messages.Add(message);
@@ -58,8 +59,6 @@ namespace MessageAPI.Controllers
 
             // Gelen verileri mevcut mesaja uyguluyoruz
             existingMessage.Content = messageDto.Content;
-            existingMessage.MessageType = messageDto.MessageType;
-            existingMessage.Status = MsgStatus.Pending;
 
             _context.Entry(existingMessage).State = EntityState.Modified;
             await _context.SaveChangesAsync();
