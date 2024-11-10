@@ -6,13 +6,7 @@ using System.Threading.Tasks;
 
 namespace MessageProcessorWorker.services.IServices
 {
-    public interface ILogService
+    public interface IEmailService
     {
-        void Log(string message);
-
-        void LogError(string message, Exception ex);
-
-        void LogWarning(string message);
-
     }
 }

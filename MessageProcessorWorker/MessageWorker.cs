@@ -6,18 +6,23 @@ namespace MessageProcessorWorker
 {
     public sealed class MessageWorker(
         IMessageService messageService,
-        ILogger<MessageWorker> logger            
+        ILogger<MessageWorker> logger,            
         //IEmailService emailService,
-        //ISmsService smsService,
+        ISmsService smsService
         //INotificationService notificationService
             ) : BackgroundService
     {
+        private readonly ILogger<MessageWorker> _logger = logger;
         private readonly IMessageService _messageService = messageService;
+        private readonly ISmsService _smsService = smsService;
+
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
             try
             {
+                logger.LogInformation("MessageWorker is starting.");
+
                 while (!stoppingToken.IsCancellationRequested)
                 {
                     // Pending status'undaki mesajları çekiyoruz
@@ -28,7 +33,8 @@ namespace MessageProcessorWorker
                         
                         try
                         {
-                            logger.LogInformation("Processing message {MessageId}", message.Id);
+                            _logger.LogInformation("LogInformation : Processing message id: {MessageId} - mesag content : {MessageContent}", message.Id, message.Content);
+
 
                             // Mesaj türüne göre işleme yapıyoruz
                             switch (message.MsgType)
@@ -37,7 +43,7 @@ namespace MessageProcessorWorker
                                     //await _emailService.SendEmailAsync(message.Content);
                                     break;
                                 case MsgType.Sms:
-                                    //await _smsService.SendSmsAsync(message.Content);
+                                    await _smsService.SendXMLSmsAsync(message);
                                     break;
                                 case MsgType.Notification:
                                     //await _notificationService.SendNotificationAsync(message.Content);
@@ -48,7 +54,7 @@ namespace MessageProcessorWorker
                         catch (Exception ex)
                         {
 
-                            Console.WriteLine($"Mesaj işlenirken hata oluştu: {ex.Message}");
+                            _logger.LogError("Error processing message", ex);
 
                         }
                     }
@@ -62,6 +68,8 @@ namespace MessageProcessorWorker
             {
                 // When the stopping token is canceled, for example, a call made from services.msc,
                 // we shouldn't exit with a non-zero exit code. In other words, this is expected...
+                logger.LogInformation("MessageWorker is stopping.");
+
             }
             catch (Exception ex)
             {

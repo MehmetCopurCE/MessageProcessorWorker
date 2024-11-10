@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using MessageAPI.Models.Enums;
 
 namespace MessageProcessorWorker.services
 {
@@ -34,9 +35,25 @@ namespace MessageProcessorWorker.services
             }
         }
 
-        public Task UpdateMessageAsync(Message message)
+        public async Task UpdateMessageStatusAsync(Message message, MsgStatus msgStatus)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using (var connection = new NpgsqlConnection(_connectionString))
+                {
+                    connection.Open();
+
+                    // Enum'u string olarak geçiriyoruz
+                    await connection.ExecuteAsync(
+                        "UPDATE public.\"Messages\" SET \"MsgStatus\" = @msgStatus WHERE \"Id\" = @Id;",
+                        new { msgStatus = msgStatus.ToString(), message.Id });
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Error updating message status", ex);
+            }
         }
+
     }
 }

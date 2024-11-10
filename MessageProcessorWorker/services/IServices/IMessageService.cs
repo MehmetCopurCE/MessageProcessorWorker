@@ -1,4 +1,5 @@
 ﻿using MessageAPI.Models;
+using MessageAPI.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,6 @@ namespace MessageProcessorWorker.services.IServices
     {
         Task<List<Message>> GetPendingMessagesAsync();
 
-        Task UpdateMessageAsync(Message message);
+        Task UpdateMessageStatusAsync(Message message, MsgStatus msgStatus);
     }
 }
